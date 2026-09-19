@@ -1,6 +1,6 @@
 
 import type { Request, Response } from "express"
-import { fail } from "../utils/envelope";
+import { fail } from "../utils/envelope"
 
 export function notFound(req: Request, res: Response) {
 
