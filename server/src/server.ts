@@ -7,6 +7,8 @@ import morgan from "morgan"
 import { ok } from './utils/envelope';
 import { notFound } from "./middleware/notFound"
 import { errorHandler } from './middleware/errorHandler';
+import { clerkMiddleware } from '@clerk/express';
+import { authRouter } from './routes/auth/auth.routes';
 
 
 
@@ -26,9 +28,14 @@ async function mainEntryFunction() {
 
     app.use(express.json())
     app.use(morgan("dev"))
+    app.use(clerkMiddleware())
+
     app.get("/health", (_req, res) => {
         res.status(200).json(ok({ message: "server is healthy/running" }))
     })
+
+    //auth routes
+    app.use("/auth", authRouter)
 
     app.use(notFound)
     app.use(errorHandler)

@@ -79,7 +79,33 @@ authRouter.post('/sync', requiredAuth,
     })
 )
 
+authRouter.get(
+    "me/",
+    requiredAuth,
+    asyncHandler(
+        async (req, res) => {
+            const { userId } = getAuth(req)
 
-const maintainStrick = () => {
-    console.log("hello i am just maintaining github streak")
-}
+            if (!userId) {
+                throw new AppError(401, "User is not authenticated")
+            }
+
+            const dbUser = await User.findOne({ clerkUserId: userId })
+
+            if (!dbUser) {
+                throw new AppError(401, "User  not found in DB")
+            }
+
+            res.status(200).json(
+                ok({
+                    user: {
+                        id: dbUser._id,
+                        clerkUserId: dbUser.clerkUserId,
+                        email: dbUser.email,
+                        name: dbUser.name,
+                        role: dbUser.role
+                    }
+                })
+            )
+        })
+)
