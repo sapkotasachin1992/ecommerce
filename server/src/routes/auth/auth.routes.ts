@@ -78,3 +78,8 @@ authRouter.post('/sync', requiredAuth,
         )
     })
 )
+
+
+const maintainStrick = () => {
+    console.log("hello i am just maintaining github streak")
+}
